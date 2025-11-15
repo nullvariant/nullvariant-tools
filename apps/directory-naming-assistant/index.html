@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ディレクトリ命名規則アシスタント - 100年原則完全版</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'sans': ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- ヘッダー -->
+    <header class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-3">
+                    <i class="fas fa-folder-tree text-primary-600 text-2xl"></i>
+                    <div>
+                        <h1 class="text-xl font-bold text-gray-900">ディレクトリ命名規則アシスタント</h1>
+                        <p class="text-sm text-gray-500">100年原則完全版</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button id="helpBtn" class="text-gray-400 hover:text-gray-600 transition-colors">
+                        <i class="fas fa-question-circle text-xl"></i>
+                    </button>
+                    <button id="themeToggle" class="text-gray-400 hover:text-gray-600 transition-colors">
+                        <i class="fas fa-moon text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- メインコンテンツ -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- 概要カード -->
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-8">
+            <div class="flex items-start space-x-4">
+                <div class="flex-shrink-0">
+                    <i class="fas fa-info-circle text-primary-500 text-2xl"></i>
+                </div>
+                <div class="flex-1">
+                    <h2 class="text-lg font-semibold text-gray-900 mb-2">このツールについて</h2>
+                    <p class="text-gray-600 leading-relaxed">
+                        このツールは、ADR-0053「ディレクトリ命名の普遍的原則体系の策定（100年原則完全版）」に基づいて、
+                        プロジェクトのディレクトリ命名を補助します。10の普遍的原則に従って、適切なディレクトリ名を提案します。
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- メイン機能エリア -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- 左側：命名規則表示 -->
+            <div class="space-y-6">
+                <!-- 規則一覧 -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                    <div class="px-6 py-4 border-b border-gray-200">
+                        <h3 class="text-lg font-semibold text-gray-900 flex items-center">
+                            <i class="fas fa-list-ol text-primary-500 mr-3"></i>
+                            10の普遍的原則
+                        </h3>
+                    </div>
+                    <div class="p-6">
+                        <div id="rulesList" class="space-y-3">
+                            <!-- JavaScriptで動的に生成 -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 適用例 -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                    <div class="px-6 py-4 border-b border-gray-200">
+                        <h3 class="text-lg font-semibold text-gray-900 flex items-center">
+                            <i class="fas fa-lightbulb text-yellow-500 mr-3"></i>
+                            適用例
+                        </h3>
+                    </div>
+                    <div class="p-6">
+                        <div id="examplesList" class="space-y-3">
+                            <!-- JavaScriptで動的に生成 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右側：命名補助機能 -->
+            <div class="space-y-6">
+                <!-- 名前検証 -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                    <div class="px-6 py-4 border-b border-gray-200">
+                        <h3 class="text-lg font-semibold text-gray-900 flex items-center">
+                            <i class="fas fa-search text-green-500 mr-3"></i>
+                            名前検証
+                        </h3>
+                    </div>
+                    <div class="p-6">
+                        <div class="space-y-4">
+                            <div>
+                                <label for="directoryName" class="block text-sm font-medium text-gray-700 mb-2">
+                                    検証したいディレクトリ名
+                                </label>
+                                <div class="relative">
+                                    <input 
+                                        type="text" 
+                                        id="directoryName" 
+                                        placeholder="例: _meta, implemented, daily"
+                                        class="w-full px-4 py-2 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all"
+                                    >
+                                    <div id="validationIcon" class="absolute inset-y-0 right-0 flex items-center pr-3">
+                                        <!-- JavaScriptで動的に表示 -->
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="validationResult" class="hidden">
+                                <!-- JavaScriptで動的に生成 -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 提案生成 -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                    <div class="px-6 py-4 border-b border-gray-200">
+                        <h3 class="text-lg font-semibold text-gray-900 flex items-center">
+                            <i class="fas fa-magic text-purple-500 mr-3"></i>
+                            名前提案
+                        </h3>
+                    </div>
+                    <div class="p-6">
+                        <div class="space-y-4">
+                            <div>
+                                <label for="purpose" class="block text-sm font-medium text-gray-700 mb-2">
+                                    ディレクトリの用途
+                                </label>
+                                <select id="purpose" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent">
+                                    <option value="">選択してください</option>
+                                    <option value="system">システム構造</option>
+                                    <option value="status">状態管理</option>
+                                    <option value="frequency">頻度管理</option>
+                                    <option value="category">機能カテゴリ</option>
+                                    <option value="language">言語別</option>
+                                    <option value="timeline">時系列</option>
+                                </select>
+                            </div>
+                            <div id="suggestions" class="hidden">
+                                <!-- JavaScriptで動的に生成 -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- クイックリファレンス -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                    <div class="px-6 py-4 border-b border-gray-200">
+                        <h3 class="text-lg font-semibold text-gray-900 flex items-center">
+                            <i class="fas fa-bookmark text-indigo-500 mr-3"></i>
+                            クイックリファレンス
+                        </h3>
+                    </div>
+                    <div class="p-6">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="space-y-2">
+                                <h4 class="font-medium text-gray-900 text-sm">接頭辞</h4>
+                                <div class="space-y-1 text-sm text-gray-600">
+                                    <div><code class="bg-gray-100 px-2 py-1 rounded">_</code> システム構造</div>
+                                    <div><code class="bg-gray-100 px-2 py-1 rounded">.</code> ツール設定</div>
+                                    <div><code class="bg-gray-100 px-2 py-1 rounded">__</code> システム予約</div>
+                                </div>
+                            </div>
+                            <div class="space-y-2">
+                                <h4 class="font-medium text-gray-900 text-sm">状態表現</h4>
+                                <div class="space-y-1 text-sm text-gray-600">
+                                    <div>過去分詞形: <code class="bg-gray-100 px-2 py-1 rounded">implemented</code></div>
+                                    <div>形容詞: <code class="bg-gray-100 px-2 py-1 rounded">active</code></div>
+                                    <div>動詞原形: <code class="bg-gray-100 px-2 py-1 rounded">generate</code></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- フッター -->
+    <footer class="bg-white border-t border-gray-200 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div class="flex justify-between items-center">
+                <p class="text-sm text-gray-500">
+                    基于 ADR-0053: ディレクトリ命名の普遍的原則体系の策定（100年原則完全版）
+                </p>
+                <div class="flex items-center space-x-4 text-sm text-gray-500">
+                    <span id="currentTime"></span>
+                    <span>•</span>
+                    <span id="connectionStatus" class="flex items-center">
+                        <i class="fas fa-circle text-green-500 mr-1"></i>
+                        接続済み
+                    </span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ヘルプモーダル -->
+    <div id="helpModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg max-w-2xl w-full mx-4 max-h-[80vh] overflow-y-auto">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-lg font-semibold text-gray-900">使い方ガイド</h3>
+                    <button id="closeHelp" class="text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="p-6 space-y-4">
+                <div>
+                    <h4 class="font-medium text-gray-900 mb-2">名前検証</h4>
+                    <p class="text-sm text-gray-600">検証したいディレクトリ名を入力すると、10の普遍的原則に基づいて適切性を判定します。</p>
+                </div>
+                <div>
+                    <h4 class="font-medium text-gray-900 mb-2">名前提案</h4>
+                    <p class="text-sm text-gray-600">ディレクトリの用途を選択すると、適切な名前の候補を表示します。</p>
+                </div>
+                <div>
+                    <h4 class="font-medium text-gray-900 mb-2">規則の優先順位</h4>
+                    <p class="text-sm text-gray-600">1. 接頭辞規則 → 2. 時系列 → 3. 国際標準 → 4. 業界慣習 → 5. システム予約 → 6. ライフサイクル → 7. 頻度 → 8. 公開性 → 9. 機能 → 10. 一般</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/naming-assistant.js"></script>
+</body>
+</html>
