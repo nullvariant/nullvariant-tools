@@ -51,3 +51,17 @@ To be determined.
 ## About
 
 Developed by [Null;Variant](https://github.com/nullvariant) with a focus on creating tools that make complex naming conventions accessible through interactive interfaces.
+
+## Commit Signatures
+
+Commits in this repository are automatically signed with IDE, extension, and AI model information:
+
+```text
+🖥️ IDE: [VS Code](https://code.visualstudio.com/)
+🔌 Extension: [Claude Code](https://claude.com/claude-code)
+
+Co-authored-by: Claude Opus 4.5 <claude-opus-4-5@anthropic.com>
+Model-Raw: claude-opus-4-5-20251101
+```
+
+This enables tracking of which environment and AI model contributed to each commit.
